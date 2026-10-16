@@ -1,0 +1,18 @@
+name: Publish APK
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK from EAS and publish as release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl -fL -o LP-CAMPUS-Attendance.apk "https://expo.dev/artifacts/eas/Q6uXqA77dGyxDnCxSdCp6C1wFK6kl1blNbaY0HFIL-s.apk"
+          ls -l LP-CAMPUS-Attendance.apk
+          unzip -tq LP-CAMPUS-Attendance.apk
+          gh release create v1.0.0-4 LP-CAMPUS-Attendance.apk --repo "${{ github.repository }}" --title "LP CAMPUS Attendance 1.0.0 (4) Android" --notes "Android APK (ARM 32/64-bit)."
